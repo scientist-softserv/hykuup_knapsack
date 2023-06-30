@@ -42,7 +42,7 @@ services:
       service: base
     image: ghcr.io/scientist-softserv/hykuup_knapsack/base:${TAG:-latest}
     build:
-      context: .
+      context: hyrax-webapp
       target: hyku-base
       cache_from:
         - ghcr.io/scientist-softserv/hykuup_knapsack/base:latest
@@ -52,7 +52,7 @@ services:
       file: hyrax-webapp/docker-compose.yml
       service: web
     build:
-      context: .
+      context: hyrax-webapp
       target: hyku-web
       cache_from:
         - ghcr.io/scientist-softserv/hykuup_knapsack/base:latest
@@ -77,7 +77,7 @@ services:
       file: hyrax-webapp/docker-compose.yml
       service: worker
     build:
-      context: .
+      context: hyrax-webapp
       target: hyku-worker
       cache_from:
         - ghcr.io/scientist-softserv/hykuup_knapsack/base:latest
