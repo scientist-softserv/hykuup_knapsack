@@ -67,6 +67,7 @@ services:
     environment:
       # This line is what makes the knapsack include use the local code instead of the remote gem
       - BUNDLE_LOCAL__HYKU_KNAPSACK=/app/samvera
+      - BUNDLE_DISABLE_LOCAL_BRANCH_CHECK=true
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test
     volumes:
