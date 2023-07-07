@@ -24,8 +24,18 @@ jobs:
       webTarget: hyku-web
       workerTarget: hyku-worker
 
-  test:
+  get_main:
     needs: build
+    steps:
+      - name: Checkout all branches and shas
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: true
+          token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+
+  test:
+    needs: get_main
     uses: scientist-softserv/actions/.github/workflows/test.yaml@make_actions_more_like_local
     with:
       confdir: '/app/samvera/hyrax-webapp/solr/conf'
@@ -33,7 +43,7 @@ jobs:
       workerTarget: hyku-worker
 
   lint:
-    needs: build
+    needs: get_main
     uses: scientist-softserv/actions/.github/workflows/lint.yaml@make_actions_more_like_local
     with:
       webTarget: hyku-web
