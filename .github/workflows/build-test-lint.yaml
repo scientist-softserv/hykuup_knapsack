@@ -25,6 +25,7 @@ jobs:
       workerTarget: hyku-worker
 
   get_main:
+    runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout all branches and shas
