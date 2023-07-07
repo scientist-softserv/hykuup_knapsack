@@ -33,7 +33,7 @@ jobs:
   #     workerTarget: hyku-worker
 
   lint:
-    needs: build
+    # needs: build
     uses: scientist-softserv/actions/.github/workflows/lint.yaml@make_actions_more_like_local
     with:
       webTarget: hyku-web
