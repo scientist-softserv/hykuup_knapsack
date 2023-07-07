@@ -32,17 +32,6 @@ jobs:
   #     webTarget: hyku-web
   #     workerTarget: hyku-worker
 
-  check_main:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          submodules: true
-          token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
-          clean: false
-          ref: main
   lint:
     # needs: build
     uses: scientist-softserv/actions/.github/workflows/lint.yaml@make_actions_more_like_local
