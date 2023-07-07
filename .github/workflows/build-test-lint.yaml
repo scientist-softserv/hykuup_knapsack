@@ -20,7 +20,6 @@ jobs:
     uses: scientist-softserv/actions/.github/workflows/build.yaml@make_actions_more_like_local
     secrets: inherit
     with:
-      fetch_depth: 0
       platforms: 'linux/amd64'
       webTarget: hyku-web
       workerTarget: hyku-worker
@@ -30,7 +29,6 @@ jobs:
     uses: scientist-softserv/actions/.github/workflows/test.yaml@make_actions_more_like_local
     with:
       confdir: '/app/samvera/hyrax-webapp/solr/conf'
-      fetch_depth: 0
       webTarget: hyku-web
       workerTarget: hyku-worker
 
@@ -38,6 +36,5 @@ jobs:
     needs: build
     uses: scientist-softserv/actions/.github/workflows/lint.yaml@make_actions_more_like_local
     with:
-      fetch_depth: 0
       webTarget: hyku-web
       workerTarget: hyku-worker
