@@ -60,10 +60,6 @@ ingress:
 extraEnvVars: &envVars
   - name: CONFDIR
     value: "/app/samvera/hyrax-webapp/solr/conf"
-  - name: CLIENT_ADMIN_USER_EMAIL
-    value: $CLIENT_ADMIN_USER_EMAIL
-  - name: CLIENT_ADMIN_USER_PASSWORD
-    value: $CLIENT_ADMIN_USER_PASSWORD
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_HOST
@@ -127,7 +123,7 @@ extraEnvVars: &envVars
   - name: HYKU_ROOT_HOST
     value: hykuup.com
   - name: INITIAL_ADMIN_EMAIL
-    value: admin@example.com
+    value: rob@scientist.com
   - name: INITIAL_ADMIN_PASSWORD
     value: testing123
   - name: HYRAX_USE_SOLR_GRAPH_NESTING
@@ -156,30 +152,28 @@ extraEnvVars: &envVars
     value: $REDIS_PASSWORD
   - name: REDIS_URL
     value: redis://:$REDIS_PASSWORD@hykuup-hyku-production-redis-master:6379/hykuup-hyku
-  - name: ROB_EMAIL
-    value: rob@notch8.com
-  - name: ROB_PASSWORD
-    value: testing123
+  - name: SECRET_KEY_BASE
+    value: $SECRET_KEY_BASE
   - name: SENTRY_DSN
-    value: https://ab7f8b39ca414630bd07f6657f57f641@o1008683.ingest.sentry.io/6745049
+    value: https://eb73063d06644d7e9a2f81713b236d61@o1008683.ingest.sentry.io/6745035
   - name: SENTRY_ENVIRONMENT
     value: production
   - name: SMTP_ADDRESS
-    value: smtp.mailtrap.io
+    value: email-smtp.us-west-2.amazonaws.com
   - name: SMTP_DOMAIN
-    value: smtp.mailtrap.io
+    value: hykuup.com
   - name: SMTP_ENABLED
     value: "true"
   - name: SMTP_PASSWORD
     value: $SMTP_PASSWORD
   - name: SMTP_PORT
-    value: "2525"
+    value: "587"
   - name: SMTP_STARTTLS
     value: 'true'
   - name: SMTP_TYPE
-    value: cram_md5
+    value: login
   - name: SMTP_USER_NAME
-    value: d930a4455e9287
+    value: AKIAJUV5DOPWWUKISN3Q
   - name: SOLR_ADMIN_PASSWORD
     value: $SOLR_ADMIN_PASSWORD
   - name: SOLR_ADMIN_USER
