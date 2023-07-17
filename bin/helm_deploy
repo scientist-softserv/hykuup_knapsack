@@ -15,8 +15,8 @@ then
     echo './bin/deploy RELEASE_NAME NAMESPACE'
     exit 1
 fi
-release_name="${1}"
-namespace="${2}"
+release_name="${1//_/-}"
+namespace="${2//_/-}"
 
 CHART_VERSION="${CHART_VERSION:-2.0.0}"
 
