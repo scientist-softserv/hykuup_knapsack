@@ -4,7 +4,7 @@
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 
 # Fetch any updates from the origin
-git fetch -a origin
+git fetch --unshallow -a origin
 
 # Loop through all remote branches
 for branch in $(git branch -r | grep -v '\->'); do
