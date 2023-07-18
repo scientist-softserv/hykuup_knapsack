@@ -65,7 +65,7 @@ extraEnvVars: &envVars
   - name: DB_HOST
     value: acid-postgres-cluster-bravo-pooler.postgres.svc.cluster.local
   - name: DB_NAME
-    value:hykuup_production
+    value: hykuup_production
   - name: DB_PASSWORD
     value: $DB_PASSWORD
   - name: DB_USER
