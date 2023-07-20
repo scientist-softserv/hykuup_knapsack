@@ -61,6 +61,10 @@ ingress:
 # add back *.hykuup.com and repo.samvera.org
 
 extraEnvVars: &envVars
+  - name: BUNDLE_LOCAL__HYKU_KNAPSACK
+    value: /app/samvera
+  - name: BUNDLE_DISABLE_LOCAL_BRANCH_CHECK
+    value: "true"
   - name: CONFDIR
     value: "/app/samvera/hyrax-webapp/solr/conf"
   - name: DB_ADAPTER
