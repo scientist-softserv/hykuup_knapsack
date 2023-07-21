@@ -21,7 +21,6 @@ x-app: &app
     - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
     - .:/app/samvera
 
-
 volumes:
   assets:
   cache:
