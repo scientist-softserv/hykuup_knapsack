@@ -8,7 +8,7 @@ x-app: &app
       - ghcr.io/scientist-softserv/hykuup_knapsack:latest
     args:
       BUILDKIT_INLINE_CACHE: 1
-      APP_PATH: ./hyrax-webapp
+      HYKU_PATH: ./hyrax-webapp
   image: ghcr.io/scientist-softserv/hykuup_knapsack:${TAG:-latest}
   environment:
     # This line is what makes the knapsack include use the local code instead of the remote gem
