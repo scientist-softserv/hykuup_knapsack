@@ -74,7 +74,7 @@ extraEnvVars: &envVars
   - name: DB_PREPARED_STATEMENTS
     value: "false"
   - name: DB_HOST
-    value: acid-postgres-cluster-delta-pooler.postgres.svc.cluster.local
+    value: acid-postgres-cluster-delta.postgres.svc.cluster.local
   - name: DB_NAME
     value: hykuup_production
   - name: DB_PASSWORD
@@ -261,7 +261,7 @@ solr:
 
 externalFcrepoHost: fcrepo.fcrepo.svc.cluster.local
 externalPostgresql:
-  host: acid-postgres-cluster-delta-pooler.postgres.svc.cluster.local
+  host: acid-postgres-cluster-delta.postgres.svc.cluster.local
   username: hykuup_production
   password: $DB_PASSWORD
   database: hykuup_production
