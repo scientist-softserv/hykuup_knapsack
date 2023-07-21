@@ -23,7 +23,6 @@ jobs:
       platforms: 'linux/amd64'
       webTarget: hyku-web
       workerTarget: hyku-worker
-      debug_enabled: true
 
   test:
     needs: build
@@ -39,4 +38,3 @@ jobs:
     with:
       webTarget: hyku-web
       workerTarget: hyku-worker
-      debug_enabled: true
