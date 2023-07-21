@@ -16,9 +16,7 @@
 .coveralls.yml
 .ebextensions
 .fcrepo_wrapper
-.git
 .github
-.gitignore
 .hound.yml
 .idea
 .internal_test_app/*
