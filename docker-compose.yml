@@ -61,6 +61,7 @@ services:
     extends:
       file: hyrax-webapp/docker-compose.yml
       service: web
+    image: ghcr.io/samvera/hyku/base:${TAG:-latest}
 
   web:
     <<: *app
