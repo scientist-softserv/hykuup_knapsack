@@ -58,8 +58,9 @@ services:
       service: db
 
   base:
-    extends: hyrax-webapp/docker-compose.yml
-    service: base
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: web
 
   web:
     <<: *app
