@@ -43,9 +43,6 @@ extraVolumeMounts: &volMounts
 ingress:
   enabled: true
   hosts:
-    - host: samvera-repo.hykuup.com
-      paths:
-        - path: /
     - host: '*.hykuup.com'
       paths:
         - path: /
@@ -55,11 +52,10 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-production-dns
   }
   tls:
-    - hosts:
-        - samvera-repo.hykuup.com
-      secretName: hykuup
-# add back *.hykuup.com and repo.samvera.org
-
+    - secretName: wildcard-tls-secret
+      hosts:
+        - '*.hykuup.com'
+        
 extraEnvVars: &envVars
   - name: BUNDLE_LOCAL__HYKU_KNAPSACK
     value: /app/samvera
