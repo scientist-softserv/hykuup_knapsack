@@ -52,6 +52,13 @@ ingress:
     - host: '*.hykuup.com'
       paths:
         - path: /
+  tls:
+    - secretName: wildcard-tls-secret
+      hosts:
+        - '*.hykuup.com'
+    - secretName: samvera-tls
+      hosts:
+        - repo.samvera.org
 
 extraEnvVars: &envVars
   - name: CONFDIR
