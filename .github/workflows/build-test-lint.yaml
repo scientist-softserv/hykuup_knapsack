@@ -17,17 +17,16 @@ on:
 
 jobs:
   build:
-    uses: scientist-softserv/actions/.github/workflows/build.yaml@add_debugger
+    uses: scientist-softserv/actions/.github/workflows/build.yaml@v0.0.15
     secrets: inherit
     with:
       platforms: 'linux/amd64'
       webTarget: hyku-web
       workerTarget: hyku-worker
-      subdir: hyrax-webapp
 
   test:
     needs: build
-    uses: scientist-softserv/actions/.github/workflows/test.yaml@add_debugger
+    uses: scientist-softserv/actions/.github/workflows/test.yaml@v0.0.15
     with:
       confdir: '/app/samvera/hyrax-webapp/solr/conf'
       webTarget: hyku-web
@@ -35,7 +34,7 @@ jobs:
 
   lint:
     needs: build
-    uses: scientist-softserv/actions/.github/workflows/lint.yaml@add_debugger
+    uses: scientist-softserv/actions/.github/workflows/lint.yaml@v0.0.15
     with:
       webTarget: hyku-web
       workerTarget: hyku-worker

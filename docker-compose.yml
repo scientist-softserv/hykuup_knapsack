@@ -1,4 +1,25 @@
 version: '3.8'
+x-app: &app
+  build:
+    context: .
+    target: hyku-web
+    cache_from:
+      - ghcr.io/samvera/hyku/base:latest
+      - ghcr.io/scientist-softserv/hykuup_knapsack:latest
+    args:
+      BUILDKIT_INLINE_CACHE: 1
+      APP_PATH: ./hyrax-webapp
+  image: ghcr.io/scientist-softserv/hykuup_knapsack:${TAG:-latest}
+  environment:
+    # This line is what makes the knapsack include use the local code instead of the remote gem
+    - BUNDLE_LOCAL__HYKU_KNAPSACK=/app/samvera
+    - BUNDLE_DISABLE_LOCAL_BRANCH_CHECK=true
+  volumes:
+    - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
+    - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
+    - assets:/app/samvera/hyrax-webapp/public/assets:cached
+    - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
+    - .:/app/samvera
 
 volumes:
   assets:
@@ -36,26 +57,28 @@ services:
       file: hyrax-webapp/docker-compose.yml
       service: db
 
+  base:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: web
+    image: ghcr.io/samvera/hyku/base:${TAG:-latest}
+
   web:
+    <<: *app
     extends:
       file: hyrax-webapp/docker-compose.yml
       service: web
     # command left commented for situations where the Gemfile.lock needs to be updated before the app starts
-    image: ghcr.io/scientist-softserv/hykuup_knapsack:${TAG:-latest}
-    command: bash -l -c "bundle && ./bin/web"
+    # command: bash -l -c "bundle && ./bin/web"
     environment:
       # This line is what makes the knapsack include use the local code instead of the remote gem
       - BUNDLE_LOCAL__HYKU_KNAPSACK=/app/samvera
+      - BUNDLE_DISABLE_LOCAL_BRANCH_CHECK=true
       - VIRTUAL_PORT=3000
       - VIRTUAL_HOST=.hyku.test
-    volumes:
-      - node_modules:/app/samvera/hyrax-webapp/node_modules:cached
-      - uploads:/app/samvera/hyrax-webapp/public/uploads:cached
-      - assets:/app/samvera/hyrax-webapp/public/assets:cached
-      - cache:/app/samvera/hyrax-webapp/tmp/cache:cached
-      - .:/app/samvera
 
   worker:
+    <<: *app
     extends:
       file: hyrax-webapp/docker-compose.yml
       service: worker
@@ -68,18 +91,18 @@ services:
       - .:/app/samvera
 
   check_volumes:
+    <<: *app
     extends:
       file: hyrax-webapp/docker-compose.yml
       service: check_volumes
 
   initialize_app:
+    <<: *app
     extends:
       file: hyrax-webapp/docker-compose.yml
       service: initialize_app
-    # command left commented for situations where the Gemfile.lock needs to be updated before the app starts
     command:
       - >
-        bundle &&
         solrcloud-upload-configset.sh /app/samvera/hyrax-webapp/solr/conf &&
         solrcloud-assign-configset.sh &&
         SOLR_COLLECTION_NAME=hydra-test solrcloud-assign-configset.sh &&

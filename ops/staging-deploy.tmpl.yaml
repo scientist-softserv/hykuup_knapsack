@@ -36,10 +36,10 @@ extraVolumeMounts: &volMounts
 ingress:
   enabled: true
   hosts:
-    - host: atla-hyku.notch8.cloud
+    - host: REPLACE_ME
       paths:
         - path: /
-    - host: "*.atla-hyku.notch8.cloud"
+    - host: "*.REPLACE_ME"
       paths:
         - path: /
   annotations: {
@@ -49,11 +49,15 @@ ingress:
   }
   tls:
     - hosts:
-        - atla-hyku.notch8.cloud
-        - "*.atla-hyku.notch8.cloud"
-      secretName: atla-hyku-staging-tls-2
+        - REPLACE_ME
+        - "*.REPLACE_ME"
+      secretName: staging-tls
 
 extraEnvVars: &envVars
+  - name: BUNDLE_LOCAL__HYKU_KNAPSACK
+    value: /app/samvera
+  - name: BUNDLE_DISABLE_LOCAL_BRANCH_CHECK
+    value: "true"
   - name: CONFDIR
     value: "/app/samvera/hyrax-webapp/solr/conf"
   - name: CLIENT_ADMIN_USER_EMAIL
@@ -65,11 +69,11 @@ extraEnvVars: &envVars
   - name: DB_HOST
     value: pg-postgresql.staging-postgres.svc.cluster.local
   - name: DB_NAME
-    value: atla-hyku-staging
+    value: hyku_staging
   - name: DB_USER
     value: postgres
   - name: FCREPO_BASE_PATH
-    value: /atlahykustaging
+    value: /hykustaging
   - name: FCREPO_HOST
     value: fcrepo.staging-fcrepo.svc.cluster.local
   - name: FCREPO_PORT
@@ -79,7 +83,7 @@ extraEnvVars: &envVars
   - name: GOOGLE_ANALYTICS_ID
     value: $GOOGLE_ANALYTICS_ID
   - name: GOOGLE_OAUTH_APP_NAME
-    value: atla-hyku-staging
+    value: hyku_staging
   - name: GOOGLE_OAUTH_APP_VERSION
     value: '1.0'
   - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
@@ -89,7 +93,7 @@ extraEnvVars: &envVars
   - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
     value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
   - name: GOOGLE_OAUTH_CLIENT_EMAIL
-    value: hyku-demo@hyku-demo.iam.gserviceaccount.com
+    value: hyku-demo@REPLACE_ME
   - name: INITIAL_ADMIN_EMAIL
     value: admin@example.com
   - name: INITIAL_ADMIN_PASSWORD
@@ -101,7 +105,7 @@ extraEnvVars: &envVars
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_CACHE_STORE_URL
-    value: redis://:$REDIS_PASSWORD@atla-hyku-staging-redis-master:6379/staging
+    value: redis://:$REDIS_PASSWORD@staging-redis-master:6379/staging
   - name: RAILS_ENV
     value: production
   - name: RAILS_LOG_TO_STDOUT
@@ -111,9 +115,9 @@ extraEnvVars: &envVars
   - name: RAILS_SERVE_STATIC_FILES
     value: "true"
   - name: REDIS_HOST
-    value: atla-hyku-staging-redis-master
+    value: staging-redis-master
   - name: REDIS_URL
-    value: redis://:$REDIS_PASSWORD@atla-hyku-staging-redis-master:6379/staging
+    value: redis://:$REDIS_PASSWORD@staging-redis-master:6379/staging
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: sidekiq
   - name: HYRAX_ANALYTICS
@@ -121,23 +125,23 @@ extraEnvVars: &envVars
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
   - name: HYKU_CONTACT_EMAIL
-    value: dev-oops@scientist.com
+    value: REPLACE_ME
   - name: HYKU_FILE_ACL
     value: "false"
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
   - name: HYKU_ADMIN_HOST
-    value: atla-hyku.notch8.cloud
+    value: RPLACEME
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "false"
   - name: HYKU_ALLOW_SIGNUP
     value: "false"
   - name: HYKU_DEFAULT_HOST
-    value: "%{tenant}.atla-hyku.notch8.cloud"
+    value: "%{tenant}.REPLACE_ME"
   - name: HYKU_MULTITENANT
     value: "true"
   - name: HYKU_ROOT_HOST
-    value: atla-hyku.notch8.cloud
+    value: REPLACE_ME
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   - name: SMTP_ENABLED
@@ -159,9 +163,9 @@ extraEnvVars: &envVars
   - name: SOLR_ADMIN_PASSWORD
     value: $SOLR_ADMIN_PASSWORD
   - name: SOLR_COLLECTION_NAME
-    value: atla-hyku-staging
+    value: hyku-staging
   - name: SOLR_CONFIGSET_NAME
-    value: atla-hyku-staging
+    value: hyku-staging
   - name: SOLR_HOST
     value: solr.staging-solr
   - name: SOLR_PORT
@@ -217,11 +221,11 @@ externalPostgresql:
 
 externalSolrHost: solr.staging-solr.svc.cluster.local
 externalSolrUser: admin
-externalSolrCollection: "atla-hyku-staging"
+externalSolrCollection: "hyku-staging"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
 global:
-  hyraxName: atla-hyku-staging-hyrax
+  hyraxName: hyku-staging-hyrax
 
 nginx:
   enabled: false
