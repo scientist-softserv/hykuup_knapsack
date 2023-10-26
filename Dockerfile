@@ -1,8 +1,7 @@
 FROM ghcr.io/samvera/hyku/base:latest as hyku-web
 ARG APP_PATH
 COPY --chown=1001:101 $APP_PATH/Gemfile* /app/samvera/hyrax-webapp/
-RUN git config --global --add safe.directory /app/samvera && \
-  bundle install --jobs "$(nproc)"
+RUN bundle install --jobs "$(nproc)"
 
 COPY --chown=1001:101 $APP_PATH/bin/db-migrate-seed.sh /app/samvera/
 # This is specifically NOT $APP_PATH but the parent directory
