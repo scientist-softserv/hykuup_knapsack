@@ -126,6 +126,8 @@ extraEnvVars: &envVars
     value: "true"
   - name: HYKU_CONTACT_EMAIL
     value: REPLACE_ME
+  - name: HYKU_CONTACT_EMAIL_TO
+    value: REPLACE_ME
   - name: HYKU_FILE_ACL
     value: "false"
   - name: HYRAX_FITS_PATH

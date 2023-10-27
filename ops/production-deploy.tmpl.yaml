@@ -118,7 +118,9 @@ extraEnvVars: &envVars
   - name: HYKU_BULKRAX_ENABLED
     value: 'true'
   - name: HYKU_CONTACT_EMAIL
-    value: dev-oops@scientist.com
+    value: info@hykuup.com
+  - name: HYKU_CONTACT_EMAIL_TO
+    value: info@hykuup.com
   - name: HYKU_DEFAULT_HOST
     value: "%{tenant}.hykuup.com"
   - name: HYKU_ENABLED
