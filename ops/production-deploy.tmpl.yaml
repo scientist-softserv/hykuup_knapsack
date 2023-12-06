@@ -270,7 +270,7 @@ externalSolrUser: admin
 externalSolrCollection: "hykuup-hyku"
 
 global:
-  hyraxName: hykuup-knapsack-production
+  hyraxName: hykuup-knapsack-production-hyrax
 
 nginx:
   service:
