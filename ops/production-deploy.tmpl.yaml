@@ -55,7 +55,7 @@ ingress:
     - secretName: wildcard-tls-secret
       hosts:
         - '*.hykuup.com'
-        
+
 extraEnvVars: &envVars
   - name: BUNDLE_LOCAL__HYKU_KNAPSACK
     value: /app/samvera
@@ -275,6 +275,7 @@ global:
 nginx:
   service:
     port: 80
+    type: ClusterIP
   enabled: true
   image:
     registry: registry.gitlab.com
