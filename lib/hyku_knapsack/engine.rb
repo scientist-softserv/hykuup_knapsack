@@ -46,10 +46,6 @@ module HykuKnapsack
     end
 
     config.after_initialize do
-      # need collection model first
-      collection_decorator = HykuKnapsack::Engine.root.join("app", "models", "collection_decorator.rb").to_s
-      Rails.configuration.cache_classes ? require(collection_decorator) : load(collection_decorator)
-
       HykuKnapsack::Engine.root.glob("app/**/*_decorator*.rb").sort.each do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
@@ -58,13 +54,7 @@ module HykuKnapsack
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
 
-      # By default plain text files are not processed for text extraction.  In adding
-      # Adventist::TextFileTextExtractionService to the beginning of the services array we are
-      # enabling text extraction from plain text files.
-      #
-      # https://github.com/scientist-softserv/adventist-dl/blob/97bd05946345926b2b6c706bd90e183a9d78e8ef/config/application.rb#L68-L73
       Hyrax::DerivativeService.services = [
-        Adventist::TextFileTextExtractionService,
         IiifPrint::PluggableDerivativeService
       ]
 
