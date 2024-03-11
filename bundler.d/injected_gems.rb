@@ -1,4 +1,3 @@
-# rubocop:disable Naming/FileName
 # frozen_string_literal: true
 
 # See https://github.com/ManageIQ/bundler-inject
@@ -15,4 +14,3 @@
 # (3) See https://github.com/ManageIQ/bundler-inject/blob/2fd8e3c62e49fbd1113fd3008a28e8fc0465e906/lib/bundler/inject/dsl_patch.rb#L92-L96
 
 override_gem 'bulkrax', '5.4.1'
-# rubocop:enable Naming/FileName
