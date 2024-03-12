@@ -1,0 +1,10 @@
+es:
+  hyrax:
+    icons:
+      mobius_image:     'fa fa-file-text-o'
+    select_type:
+      mobius_image:
+        # TODO: translate `human_name` into Spanish
+        description:        "Mobius image trabajos"
+        name:               "Mobius Image"
+        # TODO: translate `human_name` into Spanish

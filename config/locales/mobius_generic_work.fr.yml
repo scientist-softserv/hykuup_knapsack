@@ -1,0 +1,8 @@
+fr:
+  hyrax:
+    icons:
+      mobius_generic_work:     'fa fa-file-text-o'
+    select_type:
+      mobius_generic_work:
+        description:        "Mobius generic work œuvres"
+        name:               "Mobius Generic Work"

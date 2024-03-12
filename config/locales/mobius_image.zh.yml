@@ -1,0 +1,10 @@
+zh:
+  hyrax:
+    icons:
+      mobius_image:     'fa fa-file-text-o'
+    select_type:
+      mobius_image:
+        # TODO: translate `human_name` into Chinese
+        description:        "Mobius image 作品"
+        name:               "Mobius Image"
+        # TODO: translate `human_name` into Chinese

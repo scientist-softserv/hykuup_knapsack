@@ -1,0 +1,10 @@
+zh:
+  hyrax:
+    icons:
+      mobius_generic_work:     'fa fa-file-text-o'
+    select_type:
+      mobius_generic_work:
+        # TODO: translate `human_name` into Chinese
+        description:        "Mobius generic work 作品"
+        name:               "Mobius Generic Work"
+        # TODO: translate `human_name` into Chinese

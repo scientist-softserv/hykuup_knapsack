@@ -1,0 +1,8 @@
+pt-BR:
+  hyrax:
+    icons:
+      mobius_image:     'fa fa-file-text-o'
+    select_type:
+      mobius_image:
+        description:        "Mobius image obras"
+        name:               "Mobius Image"

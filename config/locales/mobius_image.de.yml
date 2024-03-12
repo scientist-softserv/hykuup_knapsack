@@ -1,0 +1,8 @@
+de:
+  hyrax:
+    icons:
+      mobius_image:     'fa fa-file-text-o'
+    select_type:
+      mobius_image:
+        description:        "Mobius image Werke"
+        name:               "Mobius Image"
