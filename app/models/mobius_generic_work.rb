@@ -1,14 +1,15 @@
+# frozen_string_literal: true
+
 # Generated via
 #  `rails generate hyrax:work MobiusGenericWork`
 class MobiusGenericWork < ActiveFedora::Base
   include ::Hyrax::WorkBehavior
+  include ::Hyrax::BasicMetadata
+  include IiifPrint.model_configuration(
+    pdf_split_child_model: self
+  )
 
-  self.indexer = MobiusGenericWorkIndexer
-  # Change this to restrict which works can be added as a child.
-  # self.valid_child_concerns = []
   validates :title, presence: { message: 'Your work must have a title.' }
 
-  # This must be included at the end, because it finalizes the metadata
-  # schema (by adding accepts_nested_attributes)
-  include ::Hyrax::BasicMetadata
+  self.indexer = GenericWorkIndexer
 end
