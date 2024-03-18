@@ -30,5 +30,11 @@ Rails.application.config.after_initialize do
       'relation' => { from: %w[sm_relation relation], split: true },
       'rights' => { from: %w[sm_rights rights], split: true }
     })
+
+    config.default_work_type = -> { Site.first&.available_works&.first }
+
+    def Bulkrax.default_work_type
+      Bulkrax.config.default_work_type.call
+    end
   end
 end
