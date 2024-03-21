@@ -15,14 +15,7 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
   after { clean_up }
 
   describe '#unzip' do
-    context 'when on a MOBIUS tenant' do
-      let(:account) { create(:account, name: Account::MOBIUS_TENANTS.first) }
-
-      before do
-        allow(Account).to receive(:find_by).and_return(account)
-        csv_parser.unzip(file_to_unzip)
-      end
-
+    shared_examples 'unpacks tar.gz file' do
       it 'unpacks a tar.gz file' do
         expect(Dir.exist?(importer_unzip_path)).to be true
       end
@@ -34,6 +27,25 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
       it 'creates the correct number of files' do
         expect(Dir.glob(File.join(importer_unzip_path, 'files', '*')).count).to eq(6)
       end
+    end
+
+    context 'when on a MOBIUS tenant' do
+      let(:account) { create(:account, name: Account::MOBIUS_TENANTS.first) }
+
+      before do
+        allow(Account).to receive(:find_by).and_return(account)
+        csv_parser.unzip(file_to_unzip)
+      end
+
+      it_behaves_like 'unpacks tar.gz file'
+
+      # rubocop:disable RSpec/NestedGroups
+      context 'when the tarball contains a single directory that then contains everything else' do
+        let(:file_to_unzip) { HykuKnapsack::Engine.root.join(File.join('spec', 'fixtures', 'nested.tar.gz')).to_s }
+
+        it_behaves_like 'unpacks tar.gz file'
+      end
+      # rubocop:enable RSpec/NestedGroups
     end
 
     context 'when not on a MOBIUS tenant' do

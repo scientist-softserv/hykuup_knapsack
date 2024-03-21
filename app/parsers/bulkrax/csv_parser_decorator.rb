@@ -20,10 +20,28 @@ module Bulkrax
       end
     end
 
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def untar(file_to_unzip)
       super
+
+      # MOBIUS tarballs can be nested, as when you first extract,
+      # it contains a single directory that then contains all the files
+      # TODO: might be nice to contribute this back to Bulkrax
+      directories = Dir.entries(importer_unzip_path).select do |entry|
+        File.directory? File.join(importer_unzip_path, entry) and !['.', '..'].include?(entry)
+      end
+
+      # If there's only one directory, move its contents to the importer_unzip_path
+      if directories.length == 1
+        subdirectory_path = File.join(importer_unzip_path, directories.first)
+        Dir.glob("#{subdirectory_path}/*").each do |file|
+          FileUtils.mv(file, importer_unzip_path)
+        end
+      end
+
       coerce_unpacked_files! if Account.find_by(tenant: Apartment::Tenant.current).mobius?
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     private
 
@@ -39,12 +57,12 @@ module Bulkrax
       combined_csv_path = File.join(importer_unzip_path, COMBINED_CSV_FILENAME)
       csv_file_paths = Dir.glob(File.join(importer_unzip_path, '*.csv'))
 
-      # Collect all unique headers from all CSV files
-      all_headers = csv_file_paths.each_with_object([]) do |file_path, headers|
+      # Collect all unique headers from all CSV files, starting with file and model since they do not originally exist
+      all_headers = csv_file_paths.each_with_object(%w[file model]) do |file_path, headers|
         CSV.foreach(file_path, headers: true) do |row|
           headers << row.headers
         end
-      end.uniq.flatten << 'file' << 'model' # add additional headers 'file' and 'model' to be used later
+      end.uniq.flatten
 
       # Open the combined CSV file for writing
       CSV.open(combined_csv_path, 'wb') do |combined_csv|
@@ -79,35 +97,30 @@ module Bulkrax
     end
     # rubocop:enable Metrics/MethodLength
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
     def coerce_csv
       csv_path = File.join(importer_unzip_path, COMBINED_CSV_FILENAME)
-      filenames = Dir[File.join(importer_unzip_path, COMBINED_FILES_DIRNAME, '*')].map { |path| File.basename(path) }
-      updated_rows = []
+      files = Dir.glob(File.join(importer_unzip_path, COMBINED_FILES_DIRNAME, '*'))
+                 .map { |path| File.basename(path) }
+                 .reject { |file| file.downcase.include?('thumbnail') }
 
-      CSV.foreach(csv_path, headers: true, return_headers: true) do |row|
-        file_entry = filenames.select { |file| file.include?(row['ss_pid'].tr(':', '_')) }.join(',')
+      new_rows = CSV.foreach(csv_path, headers: true, return_headers: true).each_with_object([]) do |row, rows|
+        file_entry = files.select { |file| file.include?(row['ss_pid'].tr(':', '_')) }.join(',')
         row['file'] = file_entry if file_entry.present?
         if (row['bs_isCommunity'] || row['bs_isCollection'])&.downcase == 'true'
-          row['model'] =
-            Hyrax.config.collection_model
+          row['model'] = Hyrax.config.collection_model
         end
 
-        updated_rows << row.to_hash
+        rows << row.to_hash
       end
-      # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength
-
-      # Ensure the new headers exist in final csv
-      # Without this we get `row['file'] => nil` which makes the header disappear later
-      updated_rows.first['file'] = 'file'
-      updated_rows.first['model'] = 'model'
 
       CSV.open(csv_path, 'wb') do |csv|
-        updated_rows.each do |row|
+        new_rows.each do |row|
           csv << row.values
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
     def clean_up_upacked_files
       Dir.glob(File.join(importer_unzip_path, '*')).each do |file_path|
