@@ -8,18 +8,6 @@ module Bulkrax
     COMBINED_CSV_FILENAME = 'combined.csv'
     COMBINED_FILES_DIRNAME = 'files'
 
-    def records(_opts = {})
-      return super unless Account.find_by(tenant: Apartment::Tenant.current).mobius?
-
-      records = super
-      records.each do |record|
-        if (record[:bs_isCommunity] || record[:bs_isCollection])&.downcase == 'true'
-          record[:model] =
-            Hyrax.config.collection_model
-        end
-      end
-    end
-
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def untar(file_to_unzip)
       super
@@ -104,18 +92,31 @@ module Bulkrax
                  .map { |path| File.basename(path) }
                  .reject { |file| file.downcase.include?('thumbnail') }
 
-      new_rows = CSV.foreach(csv_path, headers: true, return_headers: true).each_with_object([]) do |row, rows|
+      csv_rows = CSV.foreach(csv_path, headers: true, return_headers: true).map(&:to_hash)
+
+      # Separate the header from the rest of the rows
+      header = csv_rows.shift
+      new_rows = csv_rows.each do |row|
         file_entry = files.select { |file| file.include?(row['ss_pid'].tr(':', '_')) }.join(',')
         row['file'] = file_entry if file_entry.present?
-        if (row['bs_isCommunity'] || row['bs_isCollection'])&.downcase == 'true'
+        if (row['bs_isCommunity'] || row['bs_isCollection'])&.downcase == 'true' || in_collection_and_community?(row)
           row['model'] = Hyrax.config.collection_model
         end
-
-        rows << row.to_hash
       end
+
+      # Sort rows so that rows with 'model' equal to Hyrax.config.collection_model are at the top
+      new_rows.sort_by! { |row| row['model'] == Hyrax.config.collection_model ? 0 : 1 }
+
+      # Prepend the header back to the array
+      new_rows.unshift(header)
 
       CSV.open(csv_path, 'wb') do |csv|
         new_rows.each do |row|
+          # removing these columns because at this point we have the
+          # model column and these don't make sense to keep anymore
+          row.delete('bs_isCommunity')
+          row.delete('bs_isCollection')
+
           csv << row.values
         end
       end
@@ -127,6 +128,16 @@ module Bulkrax
         next if File.basename(file_path) == COMBINED_CSV_FILENAME || File.basename(file_path) == COMBINED_FILES_DIRNAME
 
         FileUtils.rm_rf(file_path)
+      end
+    end
+
+    # It has been noted that some of MOBIUS's CSVs don't indicate if it is a
+    # bs_isCollection or bs_isCommunity, this is a final fallback as per client's
+    # confirmation, all collections should be in a CSV that ends with 'C&C.csv'
+    def in_collection_and_community?(row)
+      csv_file_paths = Dir.glob(File.join(importer_unzip_path, '*C&C.csv'))
+      CSV.foreach(csv_file_paths.first, headers: true) do |csv_row|
+        return true if csv_row['ss_pid'] == row['ss_pid']
       end
     end
   end
