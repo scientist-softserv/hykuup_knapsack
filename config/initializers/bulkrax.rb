@@ -23,8 +23,6 @@ Rails.application.config.after_initialize do
       'subject' => { from: %w[sm_subject subject], split: true },
       'title' => { from: %w[sm_title title], split: true },
       # Custom property mappings
-      'collection' => { from: %w[bs_iscollection collection], split: true },
-      'community' => { from: %w[bs_iscommunity community], split: true },
       'coverage' => { from: %w[sm_coverage coverage], split: true },
       'file_format' => { from: %w[sm_format file_format], split: true },
       'relation' => { from: %w[sm_relation relation], split: true },

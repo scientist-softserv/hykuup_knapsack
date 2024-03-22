@@ -8,7 +8,9 @@
 class MobiusWorkForm < Hyrax::Forms::PcdmObjectForm(MobiusWork)
   include Hyrax::FormFields(:basic_metadata)
   include Hyrax::FormFields(:mobius_work)
-
+  include Hyrax::FormFields(:with_pdf_viewer)
+  include Hyrax::FormFields(:with_video_embed)
+  include VideoEmbedBehavior::Validation
   # Define custom form fields using the Valkyrie::ChangeSet interface
   #
   # property :my_custom_form_field
