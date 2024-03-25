@@ -1,16 +1,24 @@
 replicaCount: 2
 
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "500m"
+  requests:
+    memory: "2Gi"
+    cpu: "250m"
+
 livenessProbe:
   enabled: false
 readinessProbe:
   enabled: false
 
 brandingVolume:
-  storageClass: aws-efs
+  storageClass: efs-sc
 derivativesVolume:
-  storageClass: aws-efs
+  storageClass: efs-sc
 uploadsVolume:
-  storageClass: aws-efs
+  storageClass: efs-sc
   size: 200Gi
 
 imagePullSecrets:
@@ -36,10 +44,7 @@ extraVolumeMounts: &volMounts
 ingress:
   enabled: true
   hosts:
-    - host: REPLACE_ME
-      paths:
-        - path: /
-    - host: "*.REPLACE_ME"
+    - host: "*.staging.hykuup.com"
       paths:
         - path: /
   annotations: {
@@ -49,8 +54,7 @@ ingress:
   }
   tls:
     - hosts:
-        - REPLACE_ME
-        - "*.REPLACE_ME"
+        - "*.staging.hykuup.com"
       secretName: staging-tls
 
 extraEnvVars: &envVars
