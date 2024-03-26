@@ -29,38 +29,19 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
       end
     end
 
-    context 'when on a MOBIUS tenant' do
-      let(:account) { create(:account, name: Account::MOBIUS_TENANTS.first) }
+    before do
+      csv_parser.unzip(file_to_unzip)
+    end
 
-      before do
-        allow(Account).to receive(:find_by).and_return(account)
-        csv_parser.unzip(file_to_unzip)
-      end
+    it_behaves_like 'unpacks tar.gz file'
+
+    # rubocop:disable RSpec/NestedGroups
+    context 'when the tarball contains a single directory that then contains everything else' do
+      let(:file_to_unzip) { HykuKnapsack::Engine.root.join(File.join('spec', 'fixtures', 'nested.tar.gz')).to_s }
 
       it_behaves_like 'unpacks tar.gz file'
-
-      # rubocop:disable RSpec/NestedGroups
-      context 'when the tarball contains a single directory that then contains everything else' do
-        let(:file_to_unzip) { HykuKnapsack::Engine.root.join(File.join('spec', 'fixtures', 'nested.tar.gz')).to_s }
-
-        it_behaves_like 'unpacks tar.gz file'
-      end
-      # rubocop:enable RSpec/NestedGroups
     end
-
-    context 'when not on a MOBIUS tenant' do
-      let(:account) { create(:account, name: 'no-mob') }
-
-      before do
-        allow(Account).to receive(:find_by).and_return(account)
-        allow(csv_parser).to receive(:coerce_unpacked_files!)
-      end
-
-      it 'does not call coerce_unpacked_files!' do
-        csv_parser.unzip(file_to_unzip)
-        expect(csv_parser).not_to have_received(:coerce_unpacked_files!)
-      end
-    end
+    # rubocop:enable RSpec/NestedGroups
   end
 
   describe 'the Combined CSV' do
@@ -78,7 +59,7 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
     end
     let(:original_headers) { original_csv_data.map(&:keys).flatten.uniq }
     let(:combined_headers) { combined_csv_data.first.keys }
-    let(:added_headers) { %w[file model] }
+    let(:added_headers) { %w[file model identifier] }
     let(:removed_headers) { %w[bs_isCommunity bs_isCollection] }
 
     it 'has the correct headers' do
@@ -101,8 +82,27 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
 
     it 'has the collections at the top' do
       expected_collection_count = combined_csv_data.count { |row| row['model'] == Hyrax.config.collection_model }
-      top_row_models = combined_csv_data.take(expected_collection_count).map { |row| row['model'] }
+      top_row_models = combined_csv_data.first(expected_collection_count).map { |row| row['model'] }
       expect(top_row_models).to all(eq(Hyrax.config.collection_model))
+    end
+
+    it 'has the MobiusWorks at the bottom' do
+      expected_work_count = combined_csv_data.count { |row| row['model'] == 'MobiusWork' }
+      bottom_row_models = combined_csv_data.last(expected_work_count).map { |row| row['model'] }
+      expect(bottom_row_models).to all(eq('MobiusWork'))
+    end
+
+    it 'has files for each work' do
+      expected_work_count = combined_csv_data.count { |row| row['model'] == 'MobiusWork' }
+      bottom_row_files = combined_csv_data.last(expected_work_count).map { |row| row['file'] }
+      expect(bottom_row_files).to eq ['vital_7693+SOURCE1+SOURCE1.0.pdf,vital_7693+SOURCE1+SOURCE1.1.pdf',
+                                      'vital_16141+SOURCE1+SOURCE1.0.jpeg', 'vital_16140+SOURCE1+SOURCE1.0.jpeg',
+                                      'vital_7507+SOURCE1+SOURCE1.0.tiff']
+    end
+
+    it 'has the correct identifiers' do
+      identifiers = combined_csv_data.map { |row| row['identifier'] }
+      expect(identifiers).to eq ['vital:5891', 'vital:16160', 'vital:7693', 'vital:16141', 'vital:16140', 'vital:7507']
     end
 
     after { csv_parser.send(:clean_up_upacked_files) }

@@ -14,7 +14,7 @@ Rails.application.config.after_initialize do
       'creator' => { from: %w[sm_creator creator], split: true },
       'date_created' => { from: %w[sm_date date_created], split: true },
       'description' => { from: %w[tm_description description], split: true },
-      'identifier' => { from: %w[ss_pid identifier], split: true, source_identifier: true },
+      'identifier' => { from: %w[identifier], split: true, source_identifier: true },
       'language' => { from: %w[sm_language language], split: true },
       'parents' => { from: %w[sm_collection parents], split: true, related_parents_field_mapping: true },
       'publisher' => { from: %w[sm_publisher publisher], split: true },

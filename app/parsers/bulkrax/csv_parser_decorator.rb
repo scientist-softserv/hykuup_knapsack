@@ -27,7 +27,7 @@ module Bulkrax
         end
       end
 
-      coerce_unpacked_files! if Account.find_by(tenant: Apartment::Tenant.current).mobius?
+      coerce_unpacked_files!
     end
     # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
@@ -36,17 +36,19 @@ module Bulkrax
     def coerce_unpacked_files!
       combine_csvs
       combine_files
-      coerce_csv
+      local_coercion
       clean_up_upacked_files
     end
 
     # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def combine_csvs
+      return unless Dir.glob(File.join(importer_unzip_path, '*.csv')).length > 1
+
       combined_csv_path = File.join(importer_unzip_path, COMBINED_CSV_FILENAME)
       csv_file_paths = Dir.glob(File.join(importer_unzip_path, '*.csv'))
 
       # Collect all unique headers from all CSV files, starting with file and model since they do not originally exist
-      all_headers = csv_file_paths.each_with_object(%w[file model]) do |file_path, headers|
+      all_headers = csv_file_paths.each_with_object(%w[file model identifier]) do |file_path, headers|
         CSV.foreach(file_path, headers: true) do |row|
           headers << row.headers
         end
@@ -69,6 +71,9 @@ module Bulkrax
 
     # rubocop:disable Metrics/MethodLength
     def combine_files
+      # return if there is only one directory and it is named 'files'
+      return if Dir.glob(File.join(importer_unzip_path, '*')).length == 1 && Dir.exist?(File.join(importer_unzip_path, COMBINED_FILES_DIRNAME))
+
       file_paths = Dir.glob(File.join(importer_unzip_path, '*'))
       file_paths.select! { |file_path| Dir.exist?(file_path) }
       files = []
@@ -86,7 +91,7 @@ module Bulkrax
     # rubocop:enable Metrics/MethodLength
 
     # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
-    def coerce_csv
+    def local_coercion
       csv_path = File.join(importer_unzip_path, COMBINED_CSV_FILENAME)
       files = Dir.glob(File.join(importer_unzip_path, COMBINED_FILES_DIRNAME, '*'))
                  .map { |path| File.basename(path) }
@@ -98,10 +103,19 @@ module Bulkrax
       header = csv_rows.shift
       new_rows = csv_rows.each do |row|
         file_entry = files.select { |file| file.include?(row['ss_pid'].tr(':', '_')) }.join(',')
+
+        # handle file column
         row['file'] = file_entry if file_entry.present?
+
+        # handle model column
         if (row['bs_isCommunity'] || row['bs_isCollection'])&.downcase == 'true' || in_collection_and_community?(row)
           row['model'] = Hyrax.config.collection_model
+        else
+          row['model'] = 'MobiusWork'
         end
+
+        # handle identifier column
+        row['identifier'] = row['ss_pid']
       end
 
       # Sort rows so that rows with 'model' equal to Hyrax.config.collection_model are at the top
@@ -116,6 +130,7 @@ module Bulkrax
           # model column and these don't make sense to keep anymore
           row.delete('bs_isCommunity')
           row.delete('bs_isCollection')
+          row.delete('ss_pid')
 
           csv << row.values
         end
