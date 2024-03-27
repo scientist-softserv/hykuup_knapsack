@@ -1,5 +1,5 @@
-MOBIUS_CONCERNS = ['MobiusWork'].freeze
+# frozen_string_literal: true
 
 Hyrax.config do |config|
-  config.register_curation_concern MOBIUS_CONCERNS.map { |concern| concern.underscore.to_sym }
+  config.register_curation_concern :mobius_work
 end

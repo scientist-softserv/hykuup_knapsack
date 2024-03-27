@@ -20,10 +20,6 @@ module AccountDecorator
     truman
     webster
   ].freeze
-
-  def mobius?
-    name.in?(MOBIUS_TENANTS)
-  end
 end
 
 Account.prepend(AccountDecorator)

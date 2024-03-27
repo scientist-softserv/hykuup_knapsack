@@ -6,8 +6,6 @@ module Bulkrax
     # add any special processing here, for example to reset a metadata property
     # to add a custom property from outside of the import data
     def add_local
-      return unless Account.find_by(tenant: Apartment::Tenant.current).mobius?
-
       remove_escape_character_from_values!
       remove_duplicates_from_identifier!
 
