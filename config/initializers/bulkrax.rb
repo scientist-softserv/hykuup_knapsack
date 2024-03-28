@@ -14,7 +14,7 @@ Rails.application.config.after_initialize do
       'creator' => { from: %w[sm_creator creator], split: true },
       'date_created' => { from: %w[sm_date date_created], split: true },
       'description' => { from: %w[tm_description description], split: true },
-      'identifier' => { from: %w[ss_pid identifier], split: true, source_identifier: true },
+      'identifier' => { from: %w[identifier], split: true, source_identifier: true },
       'language' => { from: %w[sm_language language], split: true },
       'parents' => { from: %w[sm_collection parents], split: true, related_parents_field_mapping: true },
       'publisher' => { from: %w[sm_publisher publisher], split: true },
@@ -23,8 +23,6 @@ Rails.application.config.after_initialize do
       'subject' => { from: %w[sm_subject subject], split: true },
       'title' => { from: %w[sm_title title], split: true },
       # Custom property mappings
-      'collection' => { from: %w[bs_iscollection collection], split: true },
-      'community' => { from: %w[bs_iscommunity community], split: true },
       'coverage' => { from: %w[sm_coverage coverage], split: true },
       'file_format' => { from: %w[sm_format file_format], split: true },
       'relation' => { from: %w[sm_relation relation], split: true },

@@ -1,16 +1,24 @@
 replicaCount: 2
 
+resources:
+  limits:
+    memory: "4Gi"
+    cpu: "500m"
+  requests:
+    memory: "2Gi"
+    cpu: "250m"
+
 livenessProbe:
   enabled: false
 readinessProbe:
   enabled: false
 
 brandingVolume:
-  storageClass: aws-efs
+  storageClass: efs-sc
 derivativesVolume:
-  storageClass: aws-efs
+  storageClass: efs-sc
 uploadsVolume:
-  storageClass: aws-efs
+  storageClass: efs-sc
   size: 200Gi
 
 imagePullSecrets:
@@ -36,10 +44,10 @@ extraVolumeMounts: &volMounts
 ingress:
   enabled: true
   hosts:
-    - host: REPLACE_ME
+    - host: "staging.hykuup.com"
       paths:
         - path: /
-    - host: "*.REPLACE_ME"
+    - host: "*.staging.hykuup.com"
       paths:
         - path: /
   annotations: {
@@ -49,8 +57,8 @@ ingress:
   }
   tls:
     - hosts:
-        - REPLACE_ME
-        - "*.REPLACE_ME"
+        - "staging.hykuup.com"
+        - "*.staging.hykuup.com"
       secretName: staging-tls
 
 extraEnvVars: &envVars
@@ -95,7 +103,7 @@ extraEnvVars: &envVars
   - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
     value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
   - name: GOOGLE_OAUTH_CLIENT_EMAIL
-    value: hyku-demo@REPLACE_ME
+    value: hyku-demo@staging.hykuup.com
   - name: INITIAL_ADMIN_EMAIL
     value: admin@example.com
   - name: INITIAL_ADMIN_PASSWORD
@@ -107,7 +115,7 @@ extraEnvVars: &envVars
   - name: PASSENGER_APP_ENV
     value: production
   - name: RAILS_CACHE_STORE_URL
-    value: redis://:$REDIS_PASSWORD@staging-redis-master:6379/staging
+    value: redis://:$REDIS_PASSWORD@hykuup-knapsack-staging-redis-master:6379/staging
   - name: RAILS_ENV
     value: production
   - name: RAILS_LOG_TO_STDOUT
@@ -117,35 +125,35 @@ extraEnvVars: &envVars
   - name: RAILS_SERVE_STATIC_FILES
     value: "true"
   - name: REDIS_HOST
-    value: staging-redis-master
+    value: hykuup-knapsack-staging-redis-master
   - name: REDIS_URL
-    value: redis://:$REDIS_PASSWORD@staging-redis-master:6379/staging
+    value: redis://:$REDIS_PASSWORD@hykuup-knapsack-staging-redis-master:6379/staging
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: sidekiq
   - name: HYRAX_ANALYTICS
-    value: "true"
+    value: "false"
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
   - name: HYKU_CONTACT_EMAIL
-    value: REPLACE_ME
+    value: example@staging.hykuup.com
   - name: HYKU_CONTACT_EMAIL_TO
-    value: REPLACE_ME
+    value: example@staging.hykuup.com
   - name: HYKU_FILE_ACL
     value: "false"
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
   - name: HYKU_ADMIN_HOST
-    value: RPLACEME
+    value: staging.hykuup.com
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "false"
   - name: HYKU_ALLOW_SIGNUP
     value: "false"
   - name: HYKU_DEFAULT_HOST
-    value: "%{tenant}.REPLACE_ME"
+    value: "%{tenant}.staging.hykuup.com"
   - name: HYKU_MULTITENANT
     value: "true"
   - name: HYKU_ROOT_HOST
-    value: REPLACE_ME
+    value: staging.hykuup.com
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   - name: SMTP_ENABLED
@@ -221,7 +229,7 @@ externalFcrepoHost: fcrepo.staging-fcrepo.svc.cluster.local
 externalPostgresql:
   host: pg-postgresql.staging-postgres.svc.cluster.local
   username: postgres
-  password: $POSTGRES_PASSWORD
+  password: $DB_PASSWORD
 
 externalSolrHost: solr.staging-solr.svc.cluster.local
 externalSolrUser: admin

@@ -1,4 +1,5 @@
-# Use this to override any Hyrax configuration from the Knapsack
+# frozen_string_literal: true
 
 Hyrax.config do |config|
+  config.register_curation_concern :mobius_work
 end
