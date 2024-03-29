@@ -132,16 +132,20 @@ extraEnvVars: &envVars
     value: sidekiq
   - name: HYRAX_ANALYTICS
     value: "false"
+  - name: HYRAX_FITS_PATH
+    value: /app/fits/fits.sh
+  - name: HYRAX_VALKYRIE
+    value: "true"
   - name: HYKU_BULKRAX_ENABLED
     value: "true"
+  - name: HYKU_BLOCK_VALKYRIE_REDIRECT
+    value: "false"
   - name: HYKU_CONTACT_EMAIL
     value: example@staging.hykuup.com
   - name: HYKU_CONTACT_EMAIL_TO
     value: example@staging.hykuup.com
   - name: HYKU_FILE_ACL
     value: "false"
-  - name: HYRAX_FITS_PATH
-    value: /app/fits/fits.sh
   - name: HYKU_ADMIN_HOST
     value: staging.hykuup.com
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
@@ -192,6 +196,8 @@ extraEnvVars: &envVars
     value: user@example.com
   - name: TEST_USER_PASSWORD
     value: testing123
+  - name: VALKYRIE_ID_TYPE
+    value: string
 
 worker:
   replicaCount: 1
