@@ -108,11 +108,12 @@ module Bulkrax
         row['file'] = file_entry if file_entry.present?
 
         # handle model column
-        if (row['bs_isCommunity'] || row['bs_isCollection'])&.downcase == 'true' || in_collection_and_community?(row)
-          row['model'] = Hyrax.config.collection_model
-        else
-          row['model'] = 'MobiusWork'
-        end
+        row['model'] =
+          if (row['bs_isCommunity'] || row['bs_isCollection'])&.downcase == 'true' || in_collection_and_community?(row)
+            Hyrax.config.collection_model
+          else
+            'MobiusWork'
+          end
 
         # handle identifier column
         row['identifier'] = row['ss_pid']
