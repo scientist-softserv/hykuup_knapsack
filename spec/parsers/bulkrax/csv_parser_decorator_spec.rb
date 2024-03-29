@@ -60,7 +60,7 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
     let(:original_headers) { original_csv_data.map(&:keys).flatten.uniq }
     let(:combined_headers) { combined_csv_data.first.keys }
     let(:added_headers) { %w[file model identifier] }
-    let(:removed_headers) { %w[bs_isCommunity bs_isCollection] }
+    let(:removed_headers) { %w[bs_isCommunity bs_isCollection ss_pid] }
 
     it 'has the correct headers' do
       expect(combined_headers).to match_array(original_headers - removed_headers + added_headers)
