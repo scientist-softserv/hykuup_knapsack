@@ -204,26 +204,6 @@ GIT
       view_component (~> 2.74.1)
 
 GIT
-  remote: https://github.com/samvera/valkyrie.git
-  revision: fab15e5818ba7bd1e9688a8013be491a09a4494e
-  tag: v3.1.4
-  specs:
-    valkyrie (3.1.4)
-      activemodel
-      activesupport
-      dry-struct
-      dry-types (~> 1.0)
-      faraday (>= 0.9, < 3, != 2.0.0)
-      faraday-multipart
-      json
-      json-ld
-      railties
-      rdf (~> 3.0, >= 3.0.10)
-      rdf-vocab
-      reform (~> 2.2)
-      reform-rails
-
-GIT
   remote: https://github.com/scientist-softserv/apartment.git
   revision: 9ad4b0ef2ee6debb956e86ef9e7095c8358fef5e
   branch: development
@@ -261,6 +241,9 @@ PATH
   specs:
     hyku_knapsack (0.0.1)
       rails (>= 5.2.0)
+      sentry-rails
+      sentry-ruby
+      sentry-sidekiq
 
 GEM
   remote: https://rubygems.org/
@@ -1223,6 +1206,15 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sentry-rails (5.17.1)
+      railties (>= 5.0)
+      sentry-ruby (~> 5.17.1)
+    sentry-ruby (5.17.1)
+      bigdecimal
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+    sentry-sidekiq (5.17.1)
+      sentry-ruby (~> 5.17.1)
+      sidekiq (>= 3.0)
     shoulda-matchers (4.5.1)
       activesupport (>= 4.2.0)
     sidekiq (6.5.12)
@@ -1340,6 +1332,20 @@ GEM
     validate_url (1.0.15)
       activemodel (>= 3.0.0)
       public_suffix
+    valkyrie (3.1.4)
+      activemodel
+      activesupport
+      dry-struct
+      dry-types (~> 1.0)
+      faraday (>= 0.9, < 3, != 2.0.0)
+      faraday-multipart
+      json
+      json-ld
+      railties
+      rdf (~> 3.0, >= 3.0.10)
+      rdf-vocab
+      reform (~> 2.2)
+      reform-rails
     version_gem (1.1.4)
     view_component (2.74.1)
       activesupport (>= 5.0.0, < 8.0)
@@ -1474,7 +1480,7 @@ DEPENDENCIES
   tether-rails
   turbolinks (~> 5)
   twitter-typeahead-rails (= 0.11.1.pre.corejavascript)
-  valkyrie!
+  valkyrie (~> 3.0, >= 3.1.4)
   web-console (>= 3.3.0)
   webdrivers (~> 4.7.0)
   webmock
