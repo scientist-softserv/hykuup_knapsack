@@ -39,6 +39,9 @@ extraVolumeMounts: &volMounts
   - name: uploads
     mountPath: /app/samvera/hyrax-webapp/tmp/network_files
     subPath: network-files
+  - name: uploads
+    mountPath: /app/samvera/hyrax-webapp/storage/files
+    subPath: storage-files
 
 ingress:
   enabled: true
@@ -55,7 +58,7 @@ ingress:
     - secretName: wildcard-tls-secret
       hosts:
         - '*.hykuup.com'
-        
+
 extraEnvVars: &envVars
   - name: BUNDLE_LOCAL__HYKU_KNAPSACK
     value: /app/samvera
@@ -164,9 +167,9 @@ extraEnvVars: &envVars
   - name: SECRET_KEY_BASE
     value: $SECRET_KEY_BASE
   - name: SENTRY_DSN
-    value: https://eb73063d06644d7e9a2f81713b236d61@o1008683.ingest.sentry.io/6745035
+    value: $SENTRY_DSN
   - name: SENTRY_ENVIRONMENT
-    value: production
+    value: "hykuup-knapsack-production"
   - name: SMTP_ADDRESS
     value: email-smtp.us-west-2.amazonaws.com
   - name: SMTP_DOMAIN
