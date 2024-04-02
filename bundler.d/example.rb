@@ -5,3 +5,7 @@
 # you can use `gem` to add new gems, `override_gem` to change an existing gem
 # or `ensure_gem` to make sure a gem is there w/o worrying about if it is an
 # override or not
+
+gem "sentry-ruby"
+gem "sentry-rails"
+gem "sentry-sidekiq"
