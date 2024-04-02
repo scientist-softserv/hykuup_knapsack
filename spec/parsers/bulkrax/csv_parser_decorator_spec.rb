@@ -3,7 +3,6 @@
 # rubocop:disable Metrics/BlockLength
 RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
   let(:csv_parser) { Bulkrax::CsvParser.new('double') }
-  let(:account) { create(:account, name: Account::MOBIUS_TENANTS.first) }
   let(:file_to_unzip) { HykuKnapsack::Engine.root.join(File.join('spec', 'fixtures', 'test.tar.gz')).to_s }
   let(:importer_unzip_path) { HykuKnapsack::Engine.root.join('spec', 'fixtures', 'importer_unzip_path').to_s }
 
@@ -47,7 +46,6 @@ RSpec.describe Bulkrax::CsvParserDecorator, type: :decorator do
   describe 'the Combined CSV' do
     before do
       allow(csv_parser).to receive(:clean_up_upacked_files)
-      allow(Account).to receive(:find_by).and_return(account)
       csv_parser.unzip(file_to_unzip)
     end
 
