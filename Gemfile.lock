@@ -122,10 +122,10 @@ GIT
 
 GIT
   remote: https://github.com/samvera/bulkrax.git
-  revision: 785b793b68c3bce4c93ca319475aafdd03b49894
-  branch: hyrax-4-valkyrie-support
+  revision: 1048453a4d99a6fba4b10531c2dc3a67a51c4c50
+  branch: main
   specs:
-    bulkrax (7.0.0)
+    bulkrax (8.0.0)
       bagit (~> 0.4.6)
       coderay
       denormalize_fields
@@ -241,9 +241,6 @@ PATH
   specs:
     hyku_knapsack (0.0.1)
       rails (>= 5.2.0)
-      sentry-rails
-      sentry-ruby
-      sentry-sidekiq
 
 GEM
   remote: https://rubygems.org/
@@ -1382,6 +1379,7 @@ GEM
     zlib (2.1.1)
 
 PLATFORMS
+  aarch64-linux-musl
   x86_64-linux-musl
 
 DEPENDENCIES
@@ -1469,6 +1467,9 @@ DEPENDENCIES
   scss_lint
   secure_headers
   selenium-webdriver (= 4.8.1)
+  sentry-rails
+  sentry-ruby
+  sentry-sidekiq
   shoulda-matchers (~> 4.0)
   sidekiq (< 7.0)
   simplecov
