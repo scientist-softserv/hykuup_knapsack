@@ -64,6 +64,8 @@ extraEnvVars: &envVars
     value: /app/samvera
   - name: BUNDLE_DISABLE_LOCAL_BRANCH_CHECK
     value: "true"
+  - name: BUNDLE_BUNDLER_INJECT__GEM_PATH
+    value: /app/samvera/bundler.d
   - name: CONFDIR
     value: "/app/samvera/hyrax-webapp/solr/conf"
   - name: DB_ADAPTER
@@ -112,6 +114,8 @@ extraEnvVars: &envVars
     value: sidekiq
   - name: HYRAX_FITS_PATH
     value: /app/fits/fits.sh
+  - name: HYRAX_VALKYRIE
+    value: "true"
   - name: HYKU_ADMIN_HOST
     value: admin.hykuup.com
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
@@ -120,6 +124,8 @@ extraEnvVars: &envVars
     value: 'false'
   - name: HYKU_BULKRAX_ENABLED
     value: 'true'
+  - name: HYKU_BLOCK_VALKYRIE_REDIRECT
+    value: "false"
   - name: HYKU_CONTACT_EMAIL
     value: info@hykuup.com
   - name: HYKU_CONTACT_EMAIL_TO
@@ -208,6 +214,8 @@ extraEnvVars: &envVars
     value: user@notch8.com
   - name: TEST_USER_PASSWORD
     value: testing123
+  - name: VALKYRIE_ID_TYPE
+    value: string
 
 securityContext: &secValues
   readOnlyRootFilesystem: false
