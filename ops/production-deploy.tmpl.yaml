@@ -217,13 +217,8 @@ extraEnvVars: &envVars
   - name: VALKYRIE_ID_TYPE
     value: string
 
-securityContext: &secValues
-  readOnlyRootFilesystem: false
-  runAsNonRoot: false
-  runAsUser: 0
 podSecurityContext: &podSecValues
-  runAsNonRoot: false
-  runAsUser: 0
+  runAsUser: 1001
   runAsGroup: 101
   fsGroup: 101
   fsGroupChangePolicy: 'OnRootMismatch'
@@ -245,7 +240,6 @@ worker:
   extraVolumeMounts: *volMounts
   extraEnvVars: *envVars
   podSecurityContext: *podSecValues
-  securityContext: *secValues
 
 embargoRelease:
   enabled: false
