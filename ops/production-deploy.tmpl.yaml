@@ -269,14 +269,18 @@ externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin
 externalSolrCollection: "hykuup-hyku"
 
+global:
+  hyraxHostName: "hykuup-knapsack-production"
+
 nginx:
-  enabled: true
   service:
     type: ClusterIP
+    port: 80
+  enabled: true
   image:
     registry: registry.gitlab.com
     repository: notch8/scripts/bitnami-nginx
-    tag: 1.21.5-debian-10-r4
+    tag: 1.21.5-debian-10-r7
   serverBlock: |-
     upstream rails_app {
       server {{ .Values.global.hyraxHostName }};
