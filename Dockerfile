@@ -19,6 +19,11 @@ RUN echo "📚 Installing Tesseract Best (training data)!" && \
 # Switch back to the non-root user for running the application
 USER app
 
+# Ensure the directory exists and create the symbolic link
+RUN mkdir -p /app/samvera/hyrax-webapp/public && \
+    mkdir -p /app/samvera/branding && \
+    ln -snf /app/samvera/branding /app/samvera/hyrax-webapp/public/branding
+
 FROM hyku-knap-base as hyku-web
 RUN RAILS_ENV=production SECRET_KEY_BASE=`bin/rake secret` DB_ADAPTER=nulldb DB_URL='postgresql://fake' bundle exec rake assets:precompile && yarn install
 
