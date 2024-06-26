@@ -60,19 +60,31 @@ ingress:
         - '*.hykuup.com'
 
 extraEnvVars: &envVars
-  - name: BUNDLE_LOCAL__HYKU_KNAPSACK
-    value: /app/samvera
-  - name: BUNDLE_DISABLE_LOCAL_BRANCH_CHECK
-    value: "true"
+  #   value: $GOOGLE_ANALYTICS_ID
+  #   value: $GOOGLE_OAUTH_PRIVATE_KEY_SECRET
+  #   value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
+  #   value: '1.0'
+  #   value: atla-hyku-production
+  #   value: hyku-demo@hyku-demo.iam.gserviceaccount.com
+  #   value: prod-cred.p12
+  # - name: GOOGLE_ANALYTICS_ID
+  # - name: GOOGLE_OAUTH_APP_NAME
+  # - name: GOOGLE_OAUTH_APP_VERSION
+  # - name: GOOGLE_OAUTH_CLIENT_EMAIL
+  # - name: GOOGLE_OAUTH_PRIVATE_KEY_PATH
+  # - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
+  # - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
   - name: BUNDLE_BUNDLER_INJECT__GEM_PATH
     value: /app/samvera/bundler.d
+  - name: BUNDLE_DISABLE_LOCAL_BRANCH_CHECK
+    value: "true"
+  - name: BUNDLE_LOCAL__HYKU_KNAPSACK
+    value: /app/samvera
   - name: CONFDIR
     value: "/app/samvera/hyrax-webapp/solr/conf"
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_ADVISORY_LOCKS
-    value: "false"
-  - name: DB_PREPARED_STATEMENTS
     value: "false"
   - name: DB_HOST
     value: acid-postgres-cluster-delta.postgres.svc.cluster.local
@@ -80,6 +92,8 @@ extraEnvVars: &envVars
     value: hykuup_production
   - name: DB_PASSWORD
     value: $DB_PASSWORD
+  - name: DB_PREPARED_STATEMENTS
+    value: "false"
   - name: DB_USER
     value: hykuup_production
   - name: DISABLE_SPRING
@@ -88,70 +102,54 @@ extraEnvVars: &envVars
     value: /hykuup
   - name: FCREPO_HOST
     value: fcrepo.fcrepo.svc.cluster.local
-  - name: FCREPO_REST_PATH
-    value: rest
   - name: FCREPO_PATH
     value: /rest
+  - name: FCREPO_REST_PATH
+    value: rest
   - name: FCREPO_URL
     value: http://fcrepo.fcrepo.svc.cluster.local:8080/rest
-  - name: HYRAX_ANALYTICS
-    value: 'false'
-  # - name: GOOGLE_ANALYTICS_ID
-  #   value: $GOOGLE_ANALYTICS_ID
-  # - name: GOOGLE_OAUTH_APP_NAME
-  #   value: atla-hyku-production
-  # - name: GOOGLE_OAUTH_APP_VERSION
-  #   value: '1.0'
-  # - name: GOOGLE_OAUTH_PRIVATE_KEY_SECRET
-  #   value: $GOOGLE_OAUTH_PRIVATE_KEY_SECRET
-  # - name: GOOGLE_OAUTH_PRIVATE_KEY_PATH
-  #   value: prod-cred.p12
-  # - name: GOOGLE_OAUTH_PRIVATE_KEY_VALUE
-  #   value: $GOOGLE_OAUTH_PRIVATE_KEY_VALUE
-  # - name: GOOGLE_OAUTH_CLIENT_EMAIL
-  #   value: hyku-demo@hyku-demo.iam.gserviceaccount.com
-  - name: HYRAX_ACTIVE_JOB_QUEUE
-    value: sidekiq
-  - name: HYRAX_FITS_PATH
-    value: /app/fits/fits.sh
-  - name: HYRAX_VALKYRIE
-    value: "true"
   - name: HYKU_ADMIN_HOST
     value: admin.hykuup.com
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: 'false'
   - name: HYKU_ALLOW_SIGNUP
     value: 'false'
-  - name: HYKU_BULKRAX_ENABLED
-    value: 'true'
   - name: HYKU_BLOCK_VALKYRIE_REDIRECT
     value: "false"
-  - name: HYKU_CONTACT_EMAIL
-    value: info@hykuup.com
+  - name: HYKU_BULKRAX_ENABLED
+    value: "true"
   - name: HYKU_CONTACT_EMAIL_TO
+    value: info@hykuup.com
+  - name: HYKU_CONTACT_EMAIL
     value: info@hykuup.com
   - name: HYKU_DEFAULT_HOST
     value: "%{tenant}.hykuup.com"
-  - name: HYKU_ENABLED
-    value: "true"
   - name: HYKU_FILE_ACL
     value: "true"
   - name: HYKU_MULTITENANT
     value: "true"
   - name: HYKU_ROOT_HOST
     value: hykuup.com
+  - name: HYRAX_ACTIVE_JOB_QUEUE
+    value: sidekiq
+  - name: HYRAX_ANALYTICS
+    value: "false"
+  - name: HYRAX_FITS_PATH
+    value: /app/fits/fits.sh
+  - name: HYRAX_USE_SOLR_GRAPH_NESTING
+    value: "true"
+  - name: HYRAX_VALKYRIE
+    value: "true"
   - name: INITIAL_ADMIN_EMAIL
     value: rob@scientist.com
   - name: INITIAL_ADMIN_PASSWORD
     value: testing123
-  - name: HYRAX_USE_SOLR_GRAPH_NESTING
-    value: "true"
   - name: IN_DOCKER
     value: "true"
   - name: LD_LIBRARY_PATH
     value: /app/fits/tools/mediainfo/linux
-  - name: PASSENGER_APP_ENV
-    value: production
+  - name: NEGATIVE_CAPTCHA_SECRET
+    value: $NEGATIVE_CAPTCHA_SECRET
   - name: RAILS_CACHE_STORE_URL
     value: redis://:$REDIS_PASSWORD@hykuup-knapsack-production-redis-master:6379/hykuup-hyku
   - name: RAILS_ENV
@@ -164,10 +162,10 @@ extraEnvVars: &envVars
     value: "true"
   - name: REDIS_HOST
     value: hykuup-knapsack-production-redis-master
-  - name: REDIS_PORT
-    value: '6379'
   - name: REDIS_PASSWORD
     value: $REDIS_PASSWORD
+  - name: REDIS_PORT
+    value: '6379'
   - name: REDIS_URL
     value: redis://:$REDIS_PASSWORD@hykuup-knapsack-production-redis-master:6379/hykuup-hyku
   - name: SECRET_KEY_BASE
@@ -225,6 +223,9 @@ podSecurityContext: &podSecValues
 
 worker:
   replicaCount: 1
+  extraVolumeMounts: *volMounts
+  extraEnvVars: *envVars
+  podSecurityContext: *podSecValues
   resources:
     limits:
       memory: "6Gi"
@@ -237,9 +238,6 @@ worker:
     runAsGroup: 101
     fsGroup: 101
     fsGroupChangePolicy: "OnRootMismatch"
-  extraVolumeMounts: *volMounts
-  extraEnvVars: *envVars
-  podSecurityContext: *podSecValues
 
 embargoRelease:
   enabled: false
@@ -252,27 +250,30 @@ postgresql:
   enabled: false
 
 redis:
-  persistence:
-    enabled: true
-    storageClass: ebs
-  cluster:
-    enabled: false
-  password: $REDIS_PASSWORD
-
+  enabled: true
+  architecture: standalone
+  auth:
+    password: $REDIS_PASSWORD
 solr:
   enabled: false
+fits:
+  enabled: true
+  servicePort: 8080
+  subPath: /fits
 
 externalFcrepoHost: fcrepo.fcrepo.svc.cluster.local
+
 externalPostgresql:
   host: acid-postgres-cluster-delta.postgres.svc.cluster.local
   username: hykuup_production
   password: $DB_PASSWORD
   database: hykuup_production
 
-externalSolrPassword: $SOLR_ADMIN_PASSWORD
+
 externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin
 externalSolrCollection: "hykuup-hyku"
+externalSolrPassword: $SOLR_ADMIN_PASSWORD
 
 nginx:
   enabled: false
