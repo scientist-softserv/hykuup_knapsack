@@ -3,10 +3,9 @@
 # Generated via
 #  `rails generate hyrax:work_resource UncaWork`
 class UncaWorkIndexer < Hyrax::Indexers::PcdmObjectIndexer(UncaWork)
-  include Hyrax::Indexer(:basic_metadata)
+
+  include Hyrax::Indexer(:etd_resource)
   include Hyrax::Indexer(:unca_work)
-  include Hyrax::Indexer(:with_pdf_viewer)
-  include Hyrax::Indexer(:with_video_embed)
 
   include HykuIndexing
   # Uncomment this block if you want to add custom indexing behavior:
