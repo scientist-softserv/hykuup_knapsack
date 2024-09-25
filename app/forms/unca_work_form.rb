@@ -6,7 +6,6 @@
 # @see https://github.com/samvera/hyrax/wiki/Hyrax-Valkyrie-Usage-Guide#forms
 # @see https://github.com/samvera/valkyrie/wiki/ChangeSets-and-Dirty-Tracking
 class UncaWorkForm < Hyrax::Forms::PcdmObjectForm(UncaWork)
-  include Hyrax::FormFields(:etd_resource)
   include Hyrax::FormFields(:unca_work)
   # Define custom form fields using the Valkyrie::ChangeSet interface
   #
