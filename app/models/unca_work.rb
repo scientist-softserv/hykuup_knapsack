@@ -2,7 +2,6 @@
 
 # Generated via
 #  `rails generate hyrax:work_resource UncaWork`
-class UncaWork < EtdResource
-  include Hyrax::Schema(:etd_resource)
+class UncaWork < Hyrax::Work
   include Hyrax::Schema(:unca_work)
 end
