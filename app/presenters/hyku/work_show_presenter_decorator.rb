@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 # OVERRIDE Hyku to delegate Mobius properties
-
-Hyku::WorkShowPresenter.delegate :rights, :relation, :coverage, :file_format, to: :solr_document
+# OVERRIDE Hyku to delegate Unca property :date_published
+Hyku::WorkShowPresenter.delegate :rights, :relation, :coverage, :file_format, :date_published, to: :solr_document
