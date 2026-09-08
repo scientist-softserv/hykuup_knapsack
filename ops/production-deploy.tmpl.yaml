@@ -143,7 +143,7 @@ extraEnvVars: &envVars
   # restores branding but no works, so the sandbox would empty itself. The
   # %{tenant} placeholder expands to the account name.
   - name: DEMO_SEED_CSV_PATH
-    value: tmp/imports/%{tenant}/seed/metadata.csv
+    value: "tmp/imports/%{tenant}/seed/metadata.csv"
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: good_job
   - name: HYRAX_FITS_PATH
