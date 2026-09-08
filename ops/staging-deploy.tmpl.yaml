@@ -173,6 +173,12 @@ extraEnvVars: &envVars
   # %{tenant} placeholder expands to the account name.
   - name: DEMO_SEED_CSV_PATH
     value: "tmp/imports/%{tenant}/seed/metadata.csv"
+  # The depositor login owns the nightly re-import so the seed works show under
+  # its Your Works. Both logins must survive the reset stripping tenant roles.
+  - name: DEMO_IMPORT_USER
+    value: "demo-depositor@hykuup.com"
+  - name: DEMO_KEEP_USERS
+    value: "demo-admin@hykuup.com,demo-depositor@hykuup.com,support@notch8.com"
   - name: HYRAX_ACTIVE_JOB_QUEUE
     value: good_job
   - name: HYRAX_ANALYTICS
